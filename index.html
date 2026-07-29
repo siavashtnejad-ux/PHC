@@ -65,6 +65,9 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
     --status-critical-soft-fg: #7a1f1f;
     --status-warning-soft-bg:  #fbe9d0;
     --status-warning-soft-fg:  #5c3a06;
+    --status-na:               #7c8a98;
+    --status-na-soft-bg:       #edf1f4;
+    --status-na-soft-fg:       #46586a;
     --lvl-1-bg: #d9f2ef; --lvl-1-fg: #0b4f4a;
     --lvl-2-bg: #0a6c63; --lvl-2-fg: #ffffff;
     --lvl-3-bg: #0b2a43; --lvl-3-fg: #ffffff;
@@ -101,6 +104,9 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
     --status-critical-soft-fg: #f5b0a5;
     --status-warning-soft-bg:  #4a3714;
     --status-warning-soft-fg:  #f7cd8a;
+    --status-na:               #9aa8b3;
+    --status-na-soft-bg:       #293843;
+    --status-na-soft-fg:       #d4dde2;
     --lvl-1-bg: #0b4f4a; --lvl-1-fg: #d9f2ef;
     --lvl-2-bg: #14a398; --lvl-2-fg: #0d1720;
     --lvl-3-bg: #123a58; --lvl-3-fg: #ffffff;
@@ -342,19 +348,57 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
     color:var(--text-secondary); font-size:0.8rem; line-height:1.7;
   }
   .standard-explanation .exp-label { color:var(--brand-teal); font-weight:700; margin-inline-end:4px; }
-  .status-controls { display:flex; gap:6px; flex-shrink:0; align-items:flex-start; padding-top:2px; }
+  .status-controls {
+    display:grid; grid-template-columns:repeat(2,minmax(142px,1fr)); gap:6px;
+    flex:0 0 300px; align-items:stretch; padding-top:2px;
+  }
   .status-btn {
     border:1px solid var(--border); background:var(--surface-1); border-radius:8px;
-    padding:7px 11px; font-size:0.76rem; cursor:pointer; display:flex; align-items:center;
-    gap:5px; color:var(--text-secondary); white-space:nowrap;
+    padding:8px 9px; font-size:0.74rem; cursor:pointer; display:grid;
+    grid-template-columns:18px 1fr; align-items:center; gap:7px; color:var(--text-secondary);
+    min-width:0; text-align:start;
     transition: background .12s ease, border-color .12s ease, color .12s ease, transform .1s ease, box-shadow .12s ease;
   }
   .status-btn:hover { box-shadow:var(--shadow-sm); transform:translateY(-1px); }
   .status-btn:active { transform:translateY(0) scale(0.96); }
   .status-btn .mark { font-weight:700; display:inline-flex; }
   .status-btn .mark svg { width:13px; height:13px; display:block; }
-  .status-btn[data-status="1"].active { background:var(--status-good-soft-bg); border-color:var(--status-good); color:var(--status-good-soft-fg); }
+  .status-copy { min-width:0; line-height:1.35; }
+  .status-copy strong { display:block; font-weight:700; }
+  .status-en { display:block; margin-top:2px; font-size:.61rem; direction:ltr; text-align:left; opacity:.72; }
+  .status-btn[data-status="2"].active { background:var(--status-good-soft-bg); border-color:var(--status-good); color:var(--status-good-soft-fg); }
+  .status-btn[data-status="1"].active { background:var(--status-warning-soft-bg); border-color:var(--status-warning); color:var(--status-warning-soft-fg); }
   .status-btn[data-status="0"].active { background:var(--status-critical-soft-bg); border-color:var(--status-critical); color:var(--status-critical-soft-fg); }
+  .status-btn[data-status="na"].active { background:var(--status-na-soft-bg); border-color:var(--status-na); color:var(--status-na-soft-fg); }
+
+  .domain-document-control { display:flex; align-items:center; justify-content:flex-end; min-width:122px; }
+  .evidence-upload-btn {
+    border:1px solid var(--border); background:var(--surface-1); color:var(--text-secondary);
+    border-radius:9px; padding:7px 10px; display:inline-flex; align-items:center; gap:7px;
+    font:inherit; font-size:.72rem; font-weight:650; cursor:pointer; white-space:nowrap;
+    transition:background .12s ease,border-color .12s ease,color .12s ease,transform .1s ease;
+  }
+  .evidence-upload-btn:hover { border-color:var(--brand-teal); color:var(--brand-teal-strong); transform:translateY(-1px); }
+  .evidence-upload-btn.has-file { background:var(--status-good-soft-bg); border-color:var(--status-good); color:var(--status-good-soft-fg); }
+  .evidence-icon { display:inline-flex; }
+  .evidence-icon svg { width:16px; height:16px; }
+  .evidence-file {
+    margin:12px 0 2px; padding:11px 13px; border:1px solid var(--border); border-radius:10px;
+    background:color-mix(in srgb,var(--brand-teal) 5%,var(--surface-1));
+    display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  }
+  .evidence-file-main { min-width:0; display:flex; align-items:center; gap:9px; }
+  .evidence-file-main .evidence-icon { color:var(--brand-teal); flex:0 0 auto; }
+  .evidence-file-copy { min-width:0; }
+  .evidence-file-name { font-size:.78rem; font-weight:700; overflow-wrap:anywhere; }
+  .evidence-file-meta { margin-top:2px; color:var(--text-muted); font-size:.66rem; }
+  .evidence-actions { display:flex; align-items:center; gap:6px; }
+  .evidence-action {
+    border:1px solid var(--border); background:var(--surface-1); color:var(--text-secondary);
+    border-radius:7px; padding:5px 9px; font:inherit; font-size:.68rem; text-decoration:none; cursor:pointer;
+  }
+  .evidence-action:hover { border-color:var(--brand-teal); color:var(--brand-teal-strong); }
+  .evidence-action.danger:hover { border-color:var(--status-critical); color:var(--status-critical); }
 
   footer.app-footer {
     margin-top: 28px; padding-top:16px; border-top:1px solid var(--border);
@@ -730,8 +774,9 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
     .domain-header{align-items:flex-start;}
     .domain-progress{width:100%; padding-inline-start:46px;}
     .standard-main{min-width:100%;}
-    .status-controls{width:100%; display:grid; grid-template-columns:1fr 1fr;}
+    .status-controls{width:100%; flex-basis:100%; display:grid; grid-template-columns:1fr 1fr;}
     .status-btn{justify-content:center; min-height:44px;}
+    .domain-document-control{margin-inline-start:auto;}
   }
   @media (max-width:480px){
     .title-block h1{font-size:1.35rem;}
@@ -764,7 +809,7 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
     <div class="title-block">
       <span class="title-eyebrow">خودارزیابی اعتباربخشی مراقبت‌های بهداشتی اولیه</span>
       <h1>خودارزیابی استانداردهای اعتباربخشی مراکز مراقبت‌های بهداشتی اولیه</h1>
-      <p>بر پایه چارچوب استاندارد شامل ۹ محور، ۲۷ مؤلفه و ۲۳۴ سنجه. وضعیت هر سنجه را ثبت کنید و در پایان خروجی بگیرید — نتایج در مرورگر ذخیره نمی‌شود.</p>
+      <p>بر پایه چارچوب استاندارد شامل ۹ محور، ۲۷ مؤلفه و ۲۳۴ سنجه. وضعیت هر سنجه را با مدل چهارسطحی ثبت و مستندات PDF هر محور را پیوست کنید — نتایج در مرورگر ذخیره نمی‌شود.</p>
     </div>
     <div class="actions no-print">
       <button type="button" class="btn" id="themeToggle" aria-pressed="false">حالت تیره</button>
@@ -788,7 +833,7 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
 
   <div class="dashboard no-print" id="dashboardBox">
     <div class="stat-tile">
-      <p class="stat-explain">این عدد سهم سنجه‌های ثبت‌شده با وضعیت «برقرار است» از کل سنجه‌های چارچوب را نشان می‌دهد. هرچه این درصد بالاتر باشد، سطح انطباق مرکز با استانداردهای اعتباربخشی بیشتر است.</p>
+      <p class="stat-explain">این عدد نسبت امتیاز کسب‌شده به حداکثر امتیاز قابل کسب را نشان می‌دهد. «انطباق» ۲، «انطباق نسبی» ۱ و «عدم انطباق» صفر امتیاز دارد؛ سنجه‌های «غیر قابل ارزیابی» از مخرج حذف می‌شوند.</p>
       <div class="value" id="overallPct">۰٪</div>
       <div class="label">میانگین انطباق کلی</div>
       <div class="stat-fraction" id="overallFraction"></div>
@@ -809,7 +854,7 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
         <div class="domain-nav-scroll" id="domainNavigator"></div>
       </nav>
       <div class="sidebar-tip">
-        یک محور را انتخاب کنید تا باز شود. هنگام پیمایش، محور فعال به‌صورت خودکار در این فهرست مشخص می‌شود.
+        یک محور را انتخاب کنید تا باز شود. آیکون «مستندات» کنار هر محور برای پیوست یک فایل PDF است؛ فایل تا زمان رفرش صفحه در همین نشست می‌ماند.
       </div>
     </aside>
 
@@ -823,8 +868,10 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
         <select id="domainFilter"><option value="all">همه محورها</option></select>
         <select id="statusFilter">
           <option value="all">همه وضعیت‌ها</option>
-          <option value="1">۱ — برقرار است</option>
-          <option value="0">۰ — برقرار نیست</option>
+          <option value="2">۲ — انطباق</option>
+          <option value="1">۱ — انطباق نسبی</option>
+          <option value="0">۰ — عدم انطباق</option>
+          <option value="na">بدون امتیاز — غیر قابل ارزیابی</option>
           <option value="none">ارزیابی نشده</option>
         </select>
         <div class="spacer"></div>
@@ -841,7 +888,7 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
 
   <footer class="app-footer">
     این ابزار بر اساس فایل استانداردهای اعتباربخشی مراقبت‌های بهداشتی اولیه (مرکز مدیریت شبکه) ساخته شده است.
-    داده‌های ارزیابی فقط در حافظهٔ همین صفحه نگهداری می‌شود و با بستن یا رفرش مرورگر پاک می‌گردد — پیش از خروج، خروجی Excel یا PDF بگیرید.
+    داده‌های ارزیابی و فایل‌های PDF فقط در حافظهٔ همین صفحه نگهداری می‌شوند و با بستن یا رفرش مرورگر پاک می‌گردند — پیش از خروج، خروجی Excel یا PDF بگیرید.
   </footer>
 </main>
 
@@ -854,8 +901,11 @@ const LEVEL_FA = {"Foundational":"زیرساختی","Implemented":"عملکرد�
 const ICON_CHEVRON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>';
 const ICON_CHECK    = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12.5 9.5 18 20 6"/></svg>';
 const ICON_X        = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>';
+const ICON_PARTIAL  = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12h14"/></svg>';
+const ICON_NA       = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 19 19 5"/></svg>';
+const ICON_DOCUMENT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h6"/></svg>';
 
-// assessment[code] = { status: 1|0|null }  — هر سنجه فقط دو گزینه پاسخ دارد: امتیاز 1 (برقرار است) یا امتیاز 0 (برقرار نیست)
+// assessment[code].status: 2=انطباق، 1=انطباق نسبی، 0=عدم انطباق، "na"=غیر قابل ارزیابی، null=پاسخ‌داده‌نشده
 const assessment = {};
 DOMAINS.forEach(d => d.components.forEach(c => c.standards.forEach(s => {
   assessment[s.code] = { status: null };
@@ -863,6 +913,23 @@ DOMAINS.forEach(d => d.components.forEach(c => c.standards.forEach(s => {
 
 const state = { domain: 'all', status: 'all', search: '', expanded: new Set(), currentDomain: '1' };
 const meta = { facility: '', assessor: '', date: '' };
+const domainDocuments = {};
+const MAX_PDF_SIZE = 25 * 1024 * 1024;
+
+function escapeHtml(value) {
+  return String(value ?? '').replace(/[&<>"']/g, char => ({
+    '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
+  })[char]);
+}
+
+function formatFileSize(bytes) {
+  if (!Number.isFinite(bytes) || bytes <= 0) return '۰ بایت';
+  const units = ['بایت','کیلوبایت','مگابایت'];
+  let value = bytes, unit = 0;
+  while (value >= 1024 && unit < units.length - 1) { value /= 1024; unit++; }
+  const rounded = unit === 0 ? Math.round(value) : value.toFixed(value >= 10 ? 0 : 1);
+  return `${toPersianDigits(rounded)} ${units[unit]}`;
+}
 
 // ===== تقویم جلالی (شمسی) — تبدیل تاریخ و انتخاب‌گر تعاملی =====
 // پیاده‌سازی الگوریتم استاندارد و دقیق تبدیل میلادی/جلالی (بر پایه jalaali-js)
@@ -1091,20 +1158,33 @@ function getScoreTone(pct) {
 
 function computeStats() {
   const perDomain = DOMAINS.map(d => {
-    let met=0, not_met=0, none=0, total=0;
+    let compliant=0, partial=0, notCompliant=0, na=0, none=0, total=0;
     d.components.forEach(c => c.standards.forEach(s => {
       total++;
       const st = assessment[s.code].status;
-      if (st === 1) met++;
-      else if (st === 0) not_met++;
+      if (st === 2) compliant++;
+      else if (st === 1) partial++;
+      else if (st === 0) notCompliant++;
+      else if (st === 'na') na++;
       else none++;
     }));
-    return { title: d.title_fa, met, not_met, none, total };
+    const eligible = total - na;
+    const earned = compliant * 2 + partial;
+    const maxScore = eligible * 2;
+    return { title:d.title_fa, compliant, partial, notCompliant, na, none, total, eligible, earned, maxScore };
   });
   const overall = perDomain.reduce((acc,d) => {
-    acc.met += d.met; acc.not_met += d.not_met; acc.none += d.none; acc.total += d.total;
+    acc.compliant += d.compliant;
+    acc.partial += d.partial;
+    acc.notCompliant += d.notCompliant;
+    acc.na += d.na;
+    acc.none += d.none;
+    acc.total += d.total;
+    acc.eligible += d.eligible;
+    acc.earned += d.earned;
+    acc.maxScore += d.maxScore;
     return acc;
-  }, {met:0,not_met:0,none:0,total:0});
+  }, {compliant:0,partial:0,notCompliant:0,na:0,none:0,total:0,eligible:0,earned:0,maxScore:0});
   return { perDomain, overall };
 }
 
@@ -1125,13 +1205,14 @@ function renderDomainNavigator() {
     const assessed = standards.filter(standard => assessment[standard.code].status !== null).length;
     const complete = assessed === standards.length;
     const started = assessed > 0 && !complete;
+    const hasDocument = Boolean(domainDocuments[domain.num]);
     return `
       <button type="button" class="domain-chip${started ? ' is-started' : ''}${complete ? ' is-complete' : ''}${state.currentDomain === domain.num ? ' is-current' : ''}" data-domain-jump="${domain.num}" aria-current="${state.currentDomain === domain.num ? 'true' : 'false'}">
         <span>
           <span class="domain-chip-num">محور ${toPersianDigits(domain.num)}</span>
           <span class="domain-chip-title">${domain.title_fa}</span>
         </span>
-        <span class="domain-chip-meta">${toPersianDigits(assessed)} از ${toPersianDigits(standards.length)}</span>
+        <span class="domain-chip-meta">${hasDocument ? 'PDF · ' : ''}${toPersianDigits(assessed)} از ${toPersianDigits(standards.length)}</span>
       </button>`;
   }).join('');
 
@@ -1187,18 +1268,22 @@ function syncDomainObserver() {
 }
 
 function renderDashboard() {
-  const { perDomain, overall } = computeStats();
-  const pct = overall.total ? Math.round((overall.met / overall.total) * 100) : 0;
+  const { overall } = computeStats();
+  const pct = overall.maxScore ? Math.round((overall.earned / overall.maxScore) * 100) : 0;
   document.getElementById('overallPct').textContent = toPersianDigits(pct) + '٪';
   document.getElementById('overallFraction').textContent =
-    `${toPersianDigits(overall.met)} از ${toPersianDigits(overall.total)} سنجه برقرار است`;
+    overall.maxScore
+      ? `${toPersianDigits(overall.earned)} از ${toPersianDigits(overall.maxScore)} امتیاز قابل کسب`
+      : 'همه سنجه‌های پاسخ‌داده‌شده غیر قابل ارزیابی هستند';
   document.getElementById('statSub').innerHTML = `
-    <span><span class="dot" style="background:var(--status-good)"></span>۱ — برقرار است: ${toPersianDigits(overall.met)}</span>
-    <span><span class="dot" style="background:var(--status-critical)"></span>۰ — برقرار نیست: ${toPersianDigits(overall.not_met)}</span>
+    <span><span class="dot" style="background:var(--status-good)"></span>۲ — انطباق: ${toPersianDigits(overall.compliant)}</span>
+    <span><span class="dot" style="background:var(--status-warning)"></span>۱ — انطباق نسبی: ${toPersianDigits(overall.partial)}</span>
+    <span><span class="dot" style="background:var(--status-critical)"></span>۰ — عدم انطباق: ${toPersianDigits(overall.notCompliant)}</span>
+    <span><span class="dot" style="background:var(--status-na)"></span>غیر قابل ارزیابی: ${toPersianDigits(overall.na)}</span>
     <span><span class="dot" style="background:var(--gridline);border:1px solid var(--baseline)"></span>ارزیابی نشده: ${toPersianDigits(overall.none)}</span>
   `;
 
-  const assessedCount = overall.met + overall.not_met;
+  const assessedCount = overall.total - overall.none;
   const assessedPct = overall.total ? Math.round((assessedCount / overall.total) * 100) : 0;
   document.getElementById('topProgressFill').style.width = assessedPct + '%';
   const topProgress = document.getElementById('topProgress');
@@ -1209,13 +1294,18 @@ function renderDashboard() {
   const gradeEl = document.getElementById('gradeBadge');
   const dashboardEl = document.getElementById('dashboardBox');
   dashboardEl.classList.remove('tone-good', 'tone-warn', 'tone-critical');
-  if (overall.total > 0 && assessedCount === overall.total) {
+  if (overall.total > 0 && assessedCount === overall.total && overall.maxScore > 0) {
     const tier = getGradeTier(pct);
     gradeEl.textContent = tier.label;
     gradeEl.style.background = `var(${tier.cssVar})`;
     gradeEl.style.color = `var(${tier.textVar})`;
     gradeEl.style.borderColor = `var(${tier.cssVar})`;
     dashboardEl.classList.add('tone-' + getScoreTone(pct));
+  } else if (overall.total > 0 && assessedCount === overall.total) {
+    gradeEl.textContent = 'همه سنجه‌ها غیر قابل ارزیابی ثبت شده‌اند';
+    gradeEl.style.background = 'var(--status-na-soft-bg)';
+    gradeEl.style.color = 'var(--status-na-soft-fg)';
+    gradeEl.style.borderColor = 'var(--status-na)';
   } else {
     gradeEl.textContent = `در حال تکمیل — ${toPersianDigits(assessedCount)} از ${toPersianDigits(overall.total)} سنجه ارزیابی‌شده`;
     gradeEl.style.background = 'var(--gridline)';
@@ -1249,21 +1339,52 @@ function levelBadge(levelEn) {
 
 function statusButtons(code) {
   const current = assessment[code].status;
-  const defs = [ [1,ICON_CHECK,'1','برقرار است'], [0,ICON_X,'0','برقرار نیست'] ];
-  return `<div class="status-controls">` + defs.map(([val,mark,num,label]) =>
+  const defs = [
+    [2, ICON_CHECK,   '۲', 'انطباق', 'Compliant'],
+    [1, ICON_PARTIAL, '۱', 'انطباق نسبی', 'Partially Compliant'],
+    [0, ICON_X,       '۰', 'عدم انطباق', 'Not Compliant'],
+    ['na', ICON_NA,   '—', 'غیر قابل ارزیابی', 'Not Applicable']
+  ];
+  return `<div class="status-controls" role="group" aria-label="وضعیت انطباق">` + defs.map(([val,mark,num,label,labelEn]) =>
     `<button type="button" class="status-btn${current===val?' active':''}" data-status="${val}" data-code="${code}" aria-pressed="${current===val?'true':'false'}">
-      <span class="mark">${mark}</span><span>${toPersianDigits(num)} · ${label}</span>
+      <span class="mark">${mark}</span>
+      <span class="status-copy"><strong>${num} · ${label}</strong><span class="status-en">${labelEn}</span></span>
     </button>`
   ).join('') + `</div>`;
 }
 
+function buildEvidencePanel(domainNum) {
+  const documentItem = domainDocuments[domainNum];
+  if (!documentItem) return '';
+  return `
+    <div class="evidence-file no-print" data-document-domain="${domainNum}">
+      <div class="evidence-file-main">
+        <span class="evidence-icon" aria-hidden="true">${ICON_DOCUMENT}</span>
+        <div class="evidence-file-copy">
+          <div class="evidence-file-name">${escapeHtml(documentItem.name)}</div>
+          <div class="evidence-file-meta">مستند PDF محور · ${formatFileSize(documentItem.size)}</div>
+        </div>
+      </div>
+      <div class="evidence-actions">
+        <a class="evidence-action" href="${documentItem.url}" target="_blank" rel="noopener">مشاهده</a>
+        <button type="button" class="evidence-action" data-doc-replace="${domainNum}">جایگزینی</button>
+        <button type="button" class="evidence-action danger" data-doc-remove="${domainNum}">حذف</button>
+      </div>
+    </div>`;
+}
+
 // پیشنهاد بهبود مخصوص هر محور — فقط پس از پاسخ‌دهی به تمام سنجه‌های آن محور نمایش داده می‌شود
-function buildDomainRecommendation(domain, domainMet, domainNotMet, domainTotal, notMetStandards) {
-  const assessedCount = domainMet + domainNotMet;
+function buildDomainRecommendation(domain, compliant, partial, notCompliant, na, domainTotal, improvementStandards) {
+  const assessedCount = compliant + partial + notCompliant + na;
   if (domainTotal === 0 || assessedCount < domainTotal) return '';
 
-  const pct = Math.round((domainMet / domainTotal) * 100);
+  const maxScore = (domainTotal - na) * 2;
+  const pct = maxScore ? Math.round(((compliant * 2 + partial) / maxScore) * 100) : 0;
   let tone, headline;
+  if (maxScore === 0) {
+    tone = 'warn';
+    headline = 'همه سنجه‌های این محور «غیر قابل ارزیابی» ثبت شده‌اند؛ دامنه ارزیابی و مستندات توجیهی را بازبینی کنید.';
+  } else
   if (pct >= 85) {
     tone = 'good';
     headline = 'این محور در وضعیت مطلوبی قرار دارد؛ این سطح از انطباق را در ارزیابی‌های بعدی حفظ کنید.';
@@ -1278,9 +1399,9 @@ function buildDomainRecommendation(domain, domainMet, domainNotMet, domainTotal,
     headline = 'این محور در وضعیت ضعیفی قرار دارد و نیازمند بازنگری جدی و اقدام فوری است.';
   }
 
-  const itemsText = notMetStandards.length
-    ? `سنجه‌های نیازمند بازبینی: ${notMetStandards.map(s => toPersianDigits(s.code)).join('، ')}.`
-    : 'همه سنجه‌های این محور برقرار هستند.';
+  const itemsText = improvementStandards.length
+    ? `سنجه‌های نیازمند بازبینی: ${improvementStandards.map(s => toPersianDigits(s.code)).join('، ')}.`
+    : (maxScore ? 'همه سنجه‌های قابل ارزیابی این محور دارای انطباق کامل هستند.' : '');
 
   let summary = `${headline} ${itemsText}`;
   const words = summary.trim().split(/\s+/).filter(Boolean);
@@ -1301,17 +1422,19 @@ function render() {
   let totalStandardCount = 0;
 
   DOMAINS.forEach(domain => {
-    let domainMatches = 0, domainTotal = 0, domainMet = 0, domainNotMet = 0;
+    let domainMatches = 0, domainTotal = 0, domainCompliant = 0, domainPartial = 0, domainNotCompliant = 0, domainNa = 0;
     const componentsHtml = [];
-    const notMetStandards = [];
+    const improvementStandards = [];
 
     domain.components.forEach(comp => {
       const rows = [];
       comp.standards.forEach(std => {
         domainTotal++; totalStandardCount++;
         const st = assessment[std.code].status;
-        if (st === 1) domainMet++;
-        else if (st === 0) { domainNotMet++; notMetStandards.push(std); }
+        if (st === 2) domainCompliant++;
+        else if (st === 1) { domainPartial++; improvementStandards.push(std); }
+        else if (st === 0) { domainNotCompliant++; improvementStandards.push(std); }
+        else if (st === 'na') domainNa++;
         if (matchesFilters(domain, comp, std)) {
           domainMatches++; visibleStandardCount++;
           rows.push(`
@@ -1338,9 +1461,13 @@ function render() {
     if (componentsHtml.length === 0) return; // nothing matches filters in this domain
 
     const isOpen = state.expanded.has(domain.num);
-    const pct = domainTotal ? Math.round((domainMet/domainTotal)*100) : 0;
-    const isDomainComplete = domainTotal > 0 && (domainMet + domainNotMet) === domainTotal;
-    const toneClass = isDomainComplete ? ' tone-' + getScoreTone(pct) : '';
+    const earned = domainCompliant * 2 + domainPartial;
+    const maxScore = (domainTotal - domainNa) * 2;
+    const pct = maxScore ? Math.round((earned / maxScore) * 100) : 0;
+    const assessedCount = domainCompliant + domainPartial + domainNotCompliant + domainNa;
+    const isDomainComplete = domainTotal > 0 && assessedCount === domainTotal;
+    const toneClass = isDomainComplete && maxScore > 0 ? ' tone-' + getScoreTone(pct) : '';
+    const documentItem = domainDocuments[domain.num];
 
     const card = document.createElement('div');
     card.className = 'domain-card' + (isOpen ? ' open' : '') + toneClass;
@@ -1355,11 +1482,18 @@ function render() {
         </div>
         <div class="domain-progress">
           <div class="progress-bar"><span style="width:${pct}%"></span></div>
-          <div class="progress-frac">${toPersianDigits(domainMet)}/${toPersianDigits(domainTotal)} (${toPersianDigits(pct)}٪)</div>
+          <div class="progress-frac">${maxScore ? `${toPersianDigits(earned)}/${toPersianDigits(maxScore)} (${toPersianDigits(pct)}٪)` : 'بدون امتیاز'}</div>
+        </div>
+        <div class="domain-document-control no-print">
+          <button type="button" class="evidence-upload-btn${documentItem ? ' has-file' : ''}" data-doc-upload="${domain.num}" aria-label="${documentItem ? 'مشاهده یا جایگزینی مستند PDF' : 'افزودن مستند PDF'} برای محور ${escapeHtml(domain.title_fa)}">
+            <span class="evidence-icon" aria-hidden="true">${ICON_DOCUMENT}</span>
+            <span>${documentItem ? 'مستند پیوست شد' : 'مستندات PDF'}</span>
+          </button>
+          <input type="file" data-doc-input="${domain.num}" accept="application/pdf,.pdf" hidden>
         </div>
         <span class="chev">${ICON_CHEVRON}</span>
       </div>
-      <div class="domain-body-wrap" id="domainBody-${domain.num}" role="region" aria-labelledby="domainHeader-${domain.num}"><div class="domain-body">${componentsHtml.join('')}${buildDomainRecommendation(domain, domainMet, domainNotMet, domainTotal, notMetStandards)}</div></div>
+      <div class="domain-body-wrap" id="domainBody-${domain.num}" role="region" aria-labelledby="domainHeader-${domain.num}"><div class="domain-body">${buildEvidencePanel(domain.num)}${componentsHtml.join('')}${buildDomainRecommendation(domain, domainCompliant, domainPartial, domainNotCompliant, domainNa, domainTotal, improvementStandards)}</div></div>
     `;
     content.appendChild(card);
   });
@@ -1384,6 +1518,7 @@ function render() {
     };
     h.addEventListener('click', toggleDomain);
     h.addEventListener('keydown', e => {
+      if (e.target !== h) return;
       if (e.key !== 'Enter' && e.key !== ' ') return;
       e.preventDefault();
       toggleDomain();
@@ -1393,13 +1528,64 @@ function render() {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
       const code = btn.dataset.code;
-      const status = Number(btn.dataset.status);
+      const status = btn.dataset.status === 'na' ? 'na' : Number(btn.dataset.status);
       assessment[code].status = (assessment[code].status === status) ? null : status;
       renderDashboard();
       render();
       requestAnimationFrame(() => {
         content.querySelector(`.status-btn[data-code="${code}"][data-status="${status}"]`)?.focus();
       });
+    });
+  });
+  content.querySelectorAll('[data-doc-upload]').forEach(button => {
+    button.addEventListener('click', event => {
+      event.stopPropagation();
+      content.querySelector(`[data-doc-input="${button.dataset.docUpload}"]`)?.click();
+    });
+  });
+  content.querySelectorAll('[data-doc-input]').forEach(input => {
+    input.addEventListener('click', event => event.stopPropagation());
+    input.addEventListener('change', event => {
+      event.stopPropagation();
+      const file = input.files?.[0];
+      if (!file) return;
+      const isPdf = file.type === 'application/pdf' || /\.pdf$/i.test(file.name);
+      if (!isPdf) {
+        alert('لطفاً فقط فایل PDF انتخاب کنید.');
+        input.value = '';
+        return;
+      }
+      if (file.size > MAX_PDF_SIZE) {
+        alert('حجم فایل PDF باید حداکثر ۲۵ مگابایت باشد.');
+        input.value = '';
+        return;
+      }
+      const domainNum = input.dataset.docInput;
+      if (domainDocuments[domainNum]?.url) URL.revokeObjectURL(domainDocuments[domainNum].url);
+      domainDocuments[domainNum] = {
+        file,
+        name:file.name,
+        size:file.size,
+        url:URL.createObjectURL(file)
+      };
+      state.expanded.add(domainNum);
+      render();
+      renderDashboard();
+    });
+  });
+  content.querySelectorAll('[data-doc-replace]').forEach(button => {
+    button.addEventListener('click', () => {
+      content.querySelector(`[data-doc-input="${button.dataset.docReplace}"]`)?.click();
+    });
+  });
+  content.querySelectorAll('[data-doc-remove]').forEach(button => {
+    button.addEventListener('click', () => {
+      const domainNum = button.dataset.docRemove;
+      if (!confirm('مستند PDF این محور حذف شود؟')) return;
+      if (domainDocuments[domainNum]?.url) URL.revokeObjectURL(domainDocuments[domainNum].url);
+      delete domainDocuments[domainNum];
+      render();
+      renderDashboard();
     });
   });
   syncDomainObserver();
@@ -1417,24 +1603,42 @@ function populateDomainFilter() {
 
 function exportRows() {
   const { overall } = computeStats();
-  const pct = overall.total ? Math.round((overall.met / overall.total) * 100) : 0;
-  const assessedCount = overall.met + overall.not_met;
+  const pct = overall.maxScore ? Math.round((overall.earned / overall.maxScore) * 100) : 0;
+  const assessedCount = overall.total - overall.none;
   const complete = overall.total > 0 && assessedCount === overall.total;
-  const tier = complete ? getGradeTier(pct) : null;
+  const tier = complete && overall.maxScore > 0 ? getGradeTier(pct) : null;
 
   const rows = [
     ["نام مرکز", meta.facility || ''],
     ["نام ارزیاب", meta.assessor || ''],
     ["تاریخ ارزیابی", meta.date || ''],
     ["میانگین انطباق کلی", toPersianDigits(pct) + '٪'],
-    ["درجه", tier ? tier.label : 'ارزیابی تکمیل نشده است'],
+    ["امتیاز کسب‌شده", overall.earned],
+    ["حداکثر امتیاز قابل کسب", overall.maxScore],
+    ["سنجه‌های غیر قابل ارزیابی", overall.na],
+    ["درجه", tier ? tier.label : (complete ? 'بدون سنجه قابل امتیازدهی' : 'ارزیابی تکمیل نشده است')],
     [],
-    ["محور","مؤلفه","کد","سنجه","سطح","امتیاز (۰ یا ۱)","راهنمای ارزیابی"],
+    ["محور","مستند PDF محور","مؤلفه","کد","سنجه","سطح","وضعیت","امتیاز","راهنمای ارزیابی"],
   ];
   DOMAINS.forEach(d => d.components.forEach(c => c.standards.forEach(s => {
     const a = assessment[s.code];
-    const score = (a.status === null || a.status === undefined) ? '' : a.status;
-    rows.push([d.title_fa, c.title_fa, s.code, s.text, LEVEL_FA[s.level_en] || s.level_en, score, s.explanation || '']);
+    const statusLabel = a.status === 2 ? 'انطباق — Compliant'
+      : a.status === 1 ? 'انطباق نسبی — Partially Compliant'
+      : a.status === 0 ? 'عدم انطباق — Not Compliant'
+      : a.status === 'na' ? 'غیر قابل ارزیابی — Not Applicable'
+      : 'ارزیابی نشده';
+    const score = typeof a.status === 'number' ? a.status : '';
+    rows.push([
+      d.title_fa,
+      domainDocuments[d.num]?.name || '',
+      c.title_fa,
+      s.code,
+      s.text,
+      LEVEL_FA[s.level_en] || s.level_en,
+      statusLabel,
+      score,
+      s.explanation || ''
+    ]);
   })));
   return rows;
 }
@@ -1443,7 +1647,7 @@ document.getElementById('exportExcel').addEventListener('click', () => {
   if (typeof XLSX === 'undefined') { alert('کتابخانه خروجی Excel بارگذاری نشده است.'); return; }
   const rows = exportRows();
   const ws = XLSX.utils.aoa_to_sheet(rows);
-  ws['!cols'] = [{wch:22},{wch:26},{wch:10},{wch:60},{wch:12},{wch:16},{wch:30}];
+  ws['!cols'] = [{wch:22},{wch:26},{wch:26},{wch:10},{wch:60},{wch:12},{wch:32},{wch:12},{wch:36}];
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, 'خودارزیابی');
   XLSX.writeFile(wb, 'خودارزیابی-اعتباربخشی-مراقبت-اولیه.xlsx');
@@ -1451,24 +1655,26 @@ document.getElementById('exportExcel').addEventListener('click', () => {
 
 function buildPrintCover() {
   const { perDomain, overall } = computeStats();
-  const pct = overall.total ? Math.round((overall.met / overall.total) * 100) : 0;
-  const assessedCount = overall.met + overall.not_met;
+  const pct = overall.maxScore ? Math.round((overall.earned / overall.maxScore) * 100) : 0;
+  const assessedCount = overall.total - overall.none;
   const complete = overall.total > 0 && assessedCount === overall.total;
-  const tier = complete ? getGradeTier(pct) : null;
+  const tier = complete && overall.maxScore > 0 ? getGradeTier(pct) : null;
 
   const rows = perDomain.map((d, i) => {
-    const dPct = d.total ? Math.round((d.met / d.total) * 100) : 0;
+    const dPct = d.maxScore ? Math.round((d.earned / d.maxScore) * 100) : 0;
+    const documentName = domainDocuments[DOMAINS[i].num]?.name;
     return `<tr>
       <td>${toPersianDigits(DOMAINS[i].num)}</td>
-      <td>${d.title}</td>
-      <td>${toPersianDigits(d.met)} / ${toPersianDigits(d.total)}</td>
+      <td>${escapeHtml(d.title)}</td>
+      <td>${toPersianDigits(d.earned)} / ${toPersianDigits(d.maxScore)}</td>
       <td>${toPersianDigits(dPct)}٪</td>
+      <td>${documentName ? escapeHtml(documentName) : '—'}</td>
     </tr>`;
   }).join('');
 
   const gradeHtml = tier
     ? `<div class="cover-grade" style="background:${tier.hex};color:${tier.textHex}">${tier.label}</div>`
-    : `<div class="cover-grade" style="background:#e7e1d8;color:#46586a">ارزیابی هنوز تکمیل نشده است</div>`;
+    : `<div class="cover-grade" style="background:#e7e1d8;color:#46586a">${complete ? 'بدون سنجه قابل امتیازدهی' : 'ارزیابی هنوز تکمیل نشده است'}</div>`;
 
   document.getElementById('printCover').innerHTML = `
     <div class="cover-header">
@@ -1476,17 +1682,17 @@ function buildPrintCover() {
       <p>گزارش خلاصه خودارزیابی — ${toPersianDigits(DOMAINS.length)} محور، ${toPersianDigits(overall.total)} سنجه</p>
     </div>
     <table class="cover-meta">
-      <tr><th>نام مرکز</th><td>${meta.facility || '—'}</td></tr>
-      <tr><th>نام ارزیاب</th><td>${meta.assessor || '—'}</td></tr>
-      <tr><th>تاریخ ارزیابی</th><td>${meta.date || '—'}</td></tr>
+      <tr><th>نام مرکز</th><td>${escapeHtml(meta.facility || '—')}</td></tr>
+      <tr><th>نام ارزیاب</th><td>${escapeHtml(meta.assessor || '—')}</td></tr>
+      <tr><th>تاریخ ارزیابی</th><td>${escapeHtml(meta.date || '—')}</td></tr>
     </table>
     <div class="cover-score">
       <div class="cover-score-value">${toPersianDigits(pct)}٪</div>
-      <div class="cover-score-label">میانگین انطباق کلی (${toPersianDigits(assessedCount)} از ${toPersianDigits(overall.total)} سنجه ارزیابی‌شده)</div>
+      <div class="cover-score-label">${toPersianDigits(overall.earned)} از ${toPersianDigits(overall.maxScore)} امتیاز قابل کسب · ${toPersianDigits(assessedCount)} از ${toPersianDigits(overall.total)} سنجه ارزیابی‌شده · ${toPersianDigits(overall.na)} غیر قابل ارزیابی</div>
       ${gradeHtml}
     </div>
     <table class="cover-table">
-      <thead><tr><th>#</th><th>محور</th><th>برقرار</th><th>درصد</th></tr></thead>
+      <thead><tr><th>#</th><th>محور</th><th>امتیاز</th><th>درصد</th><th>مستند PDF</th></tr></thead>
       <tbody>${rows}</tbody>
     </table>
   `;
@@ -1579,6 +1785,12 @@ document.getElementById('nextUnanswered').addEventListener('click', () => {
     row.scrollIntoView({ behavior:'smooth', block:'center' });
     row.classList.remove('is-unanswered');
     requestAnimationFrame(() => row.classList.add('is-unanswered'));
+  });
+});
+
+window.addEventListener('beforeunload', () => {
+  Object.values(domainDocuments).forEach(item => {
+    if (item?.url) URL.revokeObjectURL(item.url);
   });
 });
 
